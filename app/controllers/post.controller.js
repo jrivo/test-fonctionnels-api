@@ -44,7 +44,7 @@ exports.create = (req, res) => {
 exports.update = async (req, res) => {
   prisma.post
     .update({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
       data: {
         name: req.body.name,
       },
@@ -53,6 +53,7 @@ exports.update = async (req, res) => {
       res.status(200).send(place);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };
@@ -60,7 +61,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   prisma.place
     .delete({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
     })
     .then((place) => {
       res.status(200).send(place);

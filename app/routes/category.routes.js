@@ -17,7 +17,7 @@ module.exports = function (app) {
   );
   app.put(
     "/categories/:id",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.update
   );
   app.delete(
