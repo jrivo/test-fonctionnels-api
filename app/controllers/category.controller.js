@@ -34,7 +34,7 @@ exports.create = (req, res) => {
       },
     })
     .then((category) => {
-      res.status(200).send(category);
+      res.status(201).send(category);
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -44,7 +44,7 @@ exports.create = (req, res) => {
 exports.update = async (req, res) => {
   prisma.category
     .update({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
       data: {
         name: req.body.name,
       },
@@ -58,14 +58,16 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  prisma.place
+  prisma.category
     .delete({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
     })
     .then((place) => {
-      res.status(200).send(place);
+      res.status(202).send(place);
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(204).send(err);
     });
 };
+
+exports.prisma = prisma;
