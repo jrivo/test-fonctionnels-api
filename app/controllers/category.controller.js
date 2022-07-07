@@ -34,7 +34,7 @@ exports.create = (req, res) => {
       },
     })
     .then((category) => {
-      res.status(200).send(category);
+      res.status(201).send(category);
     })
     .catch((err) => {
       res.status(500).send(err);
