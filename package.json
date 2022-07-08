@@ -4,6 +4,7 @@
     "cucumber": "cucumber-js"
   },
   "dependencies": {
+    "@cucumber/cucumber": "^8.4.0",
     "@prisma/client": "^3.11.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
