@@ -10,7 +10,7 @@ module.exports = function (app) {
   });
   app.get("/posts", controller.getAll);
   app.get("/posts/:id", controller.getById);
-  app.post("/posts", [authJwt.verifyToken, authJwt.isAdmin], controller.create);
+  app.post("/posts", [authJwt.verifyToken], controller.create);
   app.put(
     "/posts/:id",
     [authJwt.verifyToken, authJwt.isAdmin],
