@@ -7,9 +7,10 @@ const fs = require('fs');
 const CATEGORIES = [];
 Fake.faker.locale = 'fr';
 
-function prompt_catgory(data) {
-  console.log("prompt_catgory");
-  data.forEach(category => {
+function prompt_catgory(path) {
+  console.log(">> Categories");
+  const categories = require(path)
+  categories.forEach(category => {
     console.log(category);
   });
 }
@@ -25,15 +26,16 @@ function createRandomCategory() {
 }
 
 function make_categories() {
-  for (let i = 0; i < 10; i++) {
+  const path = 'app/fixture/json/category.json'
+  for (let i = 0; i < 3; i++) {
     CATEGORIES.push(createRandomCategory());
   }
-  prompt_catgory(CATEGORIES)
   const data = JSON.stringify(CATEGORIES)
-  fs.writeFileSync('app/fixture/category.json', data)
+  fs.writeFileSync(path, data)
 }
 
 
 module.exports = {
   make_categories,
+  prompt_catgory
 }

@@ -7,9 +7,10 @@ const fs = require('fs');
 const USERS = [];
 Fake.faker.locale = 'fr';
 
-function prompt_user(data) {
-  console.log("prompt_post");
-  data.forEach(user => {
+function prompt_user(path) {
+  console.log(">> Users");
+  const users = require(path)
+  users.forEach(user => {
     console.log(user);
   });
 }
@@ -29,7 +30,9 @@ function createRandomUser() {
 
 
 function make_users() {
-  for (let i = 0; i < 10; i++) {
+  const path = 'app/fixture/json/users.json'
+
+  for (let i = 0; i < 5; i++) {
     let user = createRandomUser();
     if (i===1) {
       user.role = 'ADMIN'
@@ -43,12 +46,12 @@ function make_users() {
       USERS.push(user);
     }
   }
-  prompt_user(USERS);
   const data = JSON.stringify(USERS)
-  fs.writeFileSync('app/fixture/users.json', data)
+  fs.writeFileSync(path, data)
 }
 
 
 module.exports = {
   make_users,
+  prompt_user,
 }
