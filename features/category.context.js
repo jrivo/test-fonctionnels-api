@@ -57,7 +57,10 @@ Given("I am connected as {string}", async function (role) {
 Given("I have no resources", function () {});
 
 When("I call {string} {string}", async function (method, url) {
-  this.response = await this.client[method.toLowerCase()](url).send();
+  this.response = await this.client[method.toLowerCase()](url)
+    .set("Content-Type", "application/json")
+    .set("Authorization", "Bearer " + this.token)
+    .send(this.payload);
 });
 
 Then("I should get a {int} response code", function (int) {

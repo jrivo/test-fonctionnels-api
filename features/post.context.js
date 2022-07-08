@@ -26,7 +26,7 @@ function generateString(length) {
 
 BeforeAll(async () => {
   await prisma.category.create({ data: { name: "testCategory" } });
-})
+});
 
 Before(async function () {
   this.client = request(require("../server.js"));
@@ -44,7 +44,7 @@ AfterAll(async function () {
   await prisma.category.deleteMany({});
 });
 
-Given("I am connected as {string} (with id)", async function (role) {
+Given("I am connected as {string} \\(with id)", async function (role) {
   const response = await this.client["post"]("/register").send({
     username: this.username,
     password: this.password,
@@ -56,6 +56,7 @@ Given("I am connected as {string} (with id)", async function (role) {
     username: this.username,
     password: this.password,
   });
+  console.log(loginResponse.body.accessToken);
   this.token = loginResponse.body.accessToken;
   this.id = loginResponse.body.id;
 });
@@ -63,40 +64,32 @@ Given("I am connected as {string} (with id)", async function (role) {
 Given("I have no posts", function () {
   posts = prisma.post.findMany({}).then((posts) => {
     expect(posts.length).toEqual(0);
-  })
+  });
 });
 
-Given('I have a post', function () {
+Given("I have a post", async function () {
   posts = prisma.post.findMany({}).then((posts) => {
-    expect(posts.length).toBeGreaterThan(0);
-  })
+    expect(posts.length).toEqual(1);
+  });
 });
 
-Then("I should get an empty array", function () {
-  expect(this.response.body).toEqual([]);
-});
+// When("I call {string} {string} with the payload", async function (method, url) {
+//   this.response = await this.client[method.toLowerCase()](url)
+//     .set("Content-Type", "application/json")
+//     .set("Authorization", "Bearer " + this.token)
+//     .send(this.payload);
+// });
 
-Given("I have a payload", function (dataTable) {
-  this.payload = dataTable.rowsHash();
-});
+// When('I am not the owner of the post', function () {
+//   prisma.post.findUnique({
+//     where: {
+//       id: 1,
+//     },
+//   }).then((post) => {
+//     expect(post.authorId).not.toEqual(this.id);
+//   })
 
-When("I call {string} {string} with the payload", async function (method, url) {
-  this.response = await this.client[method.toLowerCase()](url)
-    .set("Content-Type", "application/json")
-    .set("Authorization", "Bearer " + this.token)
-    .send(this.payload);
-});
-
-When('I am not the owner of the post', function () {
-  prisma.post.findUnique({
-    where: {
-      id: 1,
-    },
-  }).then((post) => {
-    expect(post.authorId).not.toEqual(this.id);
-  })
-  
-});
+// });
 
 Then(
   "The property {string} should be present in the response",
@@ -109,6 +102,14 @@ Then("The property {string} should be {string}", function (string, string2) {
   expect(this.response.body[string]).toBe(string2);
 });
 
-Then('I should get an error message', function () {
+Then("I should get an error message", function () {
   expect(this.response.body[error]).toBeDefined();
+});
+
+Then("I should get one post", function () {
+  expect(this.response.body.length).toEqual(1);
+});
+
+Then("I should get all posts", function () {
+  expect(this.response.body.length).toBeGreaterThanOrEqual(1);
 });

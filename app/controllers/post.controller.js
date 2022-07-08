@@ -48,6 +48,13 @@ exports.create = (req, res) => {
 };
 
 exports.update = async (req, res) => {
+  targetPost = await prisma.post.findUnique({
+    where: { id: parseInt(req.params.id) },
+  });
+  if (!targetPost) {
+    res.status(404).send();
+    return;
+  }
   prisma.post
     .update({
       where: { id: parseInt(req.params.id) },
@@ -71,12 +78,19 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
+  targetPost = await prisma.post.findUnique({
+    where: { id: parseInt(req.params.id) },
+  });
+  if (!targetPost) {
+    res.status(404).send();
+    return;
+  }
   prisma.post
     .delete({
       where: { id: parseInt(req.params.id) },
     })
     .then((post) => {
-      res.status(200).send(post);
+      res.status(200).send();
     })
     .catch((err) => {
       res.status(500).send(err);
