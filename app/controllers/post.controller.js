@@ -18,6 +18,10 @@ exports.getById = (req, res) => {
       where: { id: parseInt(req.params.id) },
     })
     .then((post) => {
+      if (!post) {
+        res.status(404).send();
+        return;
+      }
       res.status(200).send(post);
     })
     .catch((err) => {

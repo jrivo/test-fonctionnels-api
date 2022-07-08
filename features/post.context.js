@@ -73,33 +73,16 @@ Given("I have a post", async function () {
   });
 });
 
-// When("I call {string} {string} with the payload", async function (method, url) {
-//   this.response = await this.client[method.toLowerCase()](url)
-//     .set("Content-Type", "application/json")
-//     .set("Authorization", "Bearer " + this.token)
-//     .send(this.payload);
-// });
+Given("the payload is missing one or more fields", function () {
+  this.payload = { title: "test" };
+});
 
-// When('I am not the owner of the post', function () {
-//   prisma.post.findUnique({
-//     where: {
-//       id: 1,
-//     },
-//   }).then((post) => {
-//     expect(post.authorId).not.toEqual(this.id);
-//   })
+Then('I should get the created post', function () {
+  expect(this.response.body.length).toEqual(1);
+});
 
-// });
-
-Then(
-  "The property {string} should be present in the response",
-  function (string) {
-    expect(this.response.body[string]).toBeDefined();
-  }
-);
-
-Then("The property {string} should be {string}", function (string, string2) {
-  expect(this.response.body[string]).toBe(string2);
+Then('I should get the updated post', function () {
+  expect(this.response.body.length).toEqual(1);
 });
 
 Then("I should get an error message", function () {
