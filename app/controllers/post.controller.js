@@ -29,11 +29,18 @@ exports.create = (req, res) => {
   prisma.post
     .create({
       data: {
-        name: req.body.name,
+        title: req.body.title,
+        content: req.body.content,
+        category: {
+          connect: {
+            id: parseInt(req.body.categoryId),
+          },
+        },
+        author: { connect: { id: parseInt(req.userId) } },
       },
     })
     .then((post) => {
-      res.status(200).send(post);
+      res.status(201).send(post);
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -45,11 +52,17 @@ exports.update = async (req, res) => {
     .update({
       where: { id: parseInt(req.params.id) },
       data: {
-        name: req.body.name,
+        title: req.body.title,
+        content: req.body.content,
+        category: {
+          connect: {
+            id: parseInt(req.body.categoryId),
+          },
+        },
       },
     })
-    .then((place) => {
-      res.status(200).send(place);
+    .then((post) => {
+      res.status(200).send(post);
     })
     .catch((err) => {
       console.log(err);
@@ -58,12 +71,12 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  prisma.place
+  prisma.post
     .delete({
       where: { id: parseInt(req.params.id) },
     })
-    .then((place) => {
-      res.status(200).send(place);
+    .then((post) => {
+      res.status(200).send(post);
     })
     .catch((err) => {
       res.status(500).send(err);

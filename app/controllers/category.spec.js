@@ -45,7 +45,7 @@ describe("Unit tests", () => {
   //////////// GET ALL ////////////
 
   it("should get all categories", () => {
-    category.getAll({}, res).then(() => {
+    return category.getAll({}, res).then(() => {
       expect(mock.findMany).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.send).toHaveBeenCalledWith(records);
