@@ -54,8 +54,46 @@ Given("I am connected as {string}", async function (role) {
 
 Given("I have no resources", function () {});
 
+Given("I have a ressource", async function () {
+  this.ressource = await this.client["post"]("/categories")
+    .set("Content-Type", "application/json")
+    .set("Authorization", "Bearer " + this.token)
+    .send({
+      name: "test",
+    });
+});
+
+When("I call {string} with the payload", async function (string, dataTable) {
+  const payload = dataTable.rowsHash();
+  // console.log("payload", payload);
+  // console.log("body id ", this.ressource.body.id);
+  this.response = await this.client[string.toLowerCase()](
+    "/categories/" + this.ressource.body.id
+  )
+    .set("Content-Type", "application/json")
+    .set("Authorization", "Bearer " + this.token)
+    .send(payload);
+  console.log("response body", this.response.body);
+});
+
+When("I call {string}", async function (string) {
+  this.response = await this.client[string.toLowerCase()](
+    "/categories/" + this.ressource.body.id
+  )
+    .set("Content-Type", "application/json")
+    .set("Authorization", "Bearer " + this.token)
+    .send();
+});
+
 When("I call {string} {string}", async function (method, url) {
-  this.response = await this.client[method.toLowerCase()](url).send();
+  if (this.token) {
+    this.response = await this.client[method.toLowerCase()](url)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + this.token)
+      .send();
+  } else {
+    this.response = await this.client[method.toLowerCase()](url).send();
+  }
 });
 
 Then("I should get a {int} response code", function (int) {
@@ -64,6 +102,10 @@ Then("I should get a {int} response code", function (int) {
 
 Then("I should get an empty array", function () {
   expect(this.response.body).toEqual([]);
+});
+
+Then("I should get an array with {int} element", function (int) {
+  expect(this.response.body.length).toEqual(int);
 });
 
 Given("I have a payload", function (dataTable) {
