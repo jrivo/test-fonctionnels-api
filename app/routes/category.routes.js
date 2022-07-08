@@ -12,12 +12,12 @@ module.exports = function (app) {
   app.get("/categories/:id", controller.getById);
   app.post(
     "/categories",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.create
   );
   app.put(
     "/categories/:id",
-    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    [authJwt.verifyToken, authJwt.isAdmin],
     controller.update
   );
   app.delete(

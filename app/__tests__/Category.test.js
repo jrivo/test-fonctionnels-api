@@ -129,7 +129,7 @@ describe("Product routes", () => {
     expect(response.body).toHaveProperty("name", categoryName);
   });
 
-  it("can't create a new category as a moderator", async () => {
+  it("can create a new category as a moderator", async () => {
     const categoryName = generateString(10);
     const response = await request
       .post("/categories")
@@ -140,7 +140,29 @@ describe("Product routes", () => {
       });
 
     console.log("moderator token", moderatorToken);
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(201);
+  });
+
+  it("shouldn't be able to update a cetagory as moderator", async () => {
+    const categoryName = generateString(10);
+    const response = await request
+      .post("/categories")
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        name: categoryName,
+      });
+    expect(response.status).toBe(201);
+
+    const updatedResponse = await request
+      .put("/categories/" + response.body.id)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + moderatorToken)
+      .send({
+        name: "updated test value",
+      });
+
+    expect(updatedResponse.status).toBe(403);
   });
 
   it("should not have access when token is incorect", async () => {
@@ -198,6 +220,18 @@ describe("Product routes", () => {
 
     expect(updatedResponse.status).toBe(200);
     expect(updatedResponse.body.name).toBe("updated test value");
+  });
+
+  it("shouldn't be able to update a cetagory that doesn't exist", async () => {
+    const updatedResponse = await request
+      .put("/categories/" + 564)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        name: "updated test value",
+      });
+
+    expect(updatedResponse.status).toBe(400);
   });
 
   it("should not be able to update a category without a token", async () => {
