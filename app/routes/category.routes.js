@@ -12,16 +12,16 @@ module.exports = function (app) {
   app.get("/categories/:id", controller.getById);
   app.post(
     "/categories",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.create
   );
   app.put(
-    "/places/:id",
+    "/categories/:id",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.update
   );
   app.delete(
-    "/places/:id",
+    "/categories/:id",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.delete
   );
