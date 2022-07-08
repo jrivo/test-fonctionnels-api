@@ -27,3 +27,7 @@ async function main(params) {
 }
 
 main();
+
+module.exports = {
+    create_fixture
+}
