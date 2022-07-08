@@ -1,11 +1,7 @@
 {
   "scripts": {
     "test": "jest",
-<<<<<<< HEAD
     "cucumber": "cucumber-js"
-=======
-    "cucumber":"cucumber-js --publish-quiet"
->>>>>>> unit-testing
   },
   "dependencies": {
     "@cucumber/cucumber": "^8.4.0",
@@ -22,12 +18,9 @@
     "supertest": "^6.2.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@faker-js/faker": "^7.3.0",
-=======
     "@cucumber/cucumber": "^8.4.0",
     "jest": "^28.1.2",
->>>>>>> unit-testing
     "prisma": "^3.11.0"
   }
 }
