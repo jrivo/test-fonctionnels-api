@@ -8,6 +8,7 @@ const {
 } = require("@cucumber/cucumber");
 const request = require("supertest");
 const { expect } = require("expect");
+const fixture = require("../app/fixture")
 
 Before(function () {
   this.client = request(require("../server.js"));
@@ -23,9 +24,32 @@ AfterAll(function () {
   //   connection.close();
 });
 
+
+// BACKGROUND
+
+Given("I load {string}", async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  console.log('Create fixture '+string);
+  fixture.create_fixture()
+});
+
+Given("I am logged", async function () {
+  // Write code here that turns the phrase above into concrete actions
+  console.log('Logged');
+});
+
+Given("I am {string}", async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  console.log('Role: '+string);
+});
+
+
+// SCENARIO
+
 Given("I have a payload", function () {
   // Write code here that turns the phrase above into concrete actions
 });
+
 
 When("I call {string} {string} with the payload", async function (method, url) {
   // Write code here that turns the phrase above into concrete actions
