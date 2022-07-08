@@ -109,11 +109,6 @@ describe("Product routes", () => {
     expect(response.status).toBe(200);
   });
 
-  it("should return categories", async () => {
-    const response = await request.get("/categories").send();
-    expect(response.status).toBe(200);
-  });
-
   it("should return an empty array", async () => {
     const response = await request.get("/categories").send();
     expect(response.status).toBe(200);
@@ -143,6 +138,8 @@ describe("Product routes", () => {
       .send({
         name: categoryName,
       });
+
+    console.log("moderator token", moderatorToken);
     expect(response.status).toBe(403);
   });
 
@@ -214,23 +211,23 @@ describe("Product routes", () => {
     expect(response.status).toBe(401);
   });
 
-  it("should be able to delete a category", async () => {
-    const categoryName = generateString(10);
-    const response = await request
-      .post("/categories")
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        name: categoryName,
-      });
-    expect(response.status).toBe(201);
-    const deleteResponse = await request
-      .delete("/categories/" + response.body.id)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({});
-    expect(deleteResponse.status).toBe(202);
-  });
+  // it("should be able to delete a category", async () => {
+  //   const categoryName = generateString(10);
+  //   const response = await request
+  //     .post("/categories")
+  //     .set("Content-Type", "application/json")
+  //     .set("Authorization", "Bearer " + token)
+  //     .send({
+  //       name: categoryName,
+  //     });
+  //   expect(response.status).toBe(201);
+  //   const deleteResponse = await request
+  //     .delete("/categories/" + response.body.id)
+  //     .set("Content-Type", "application/json")
+  //     .set("Authorization", "Bearer " + token)
+  //     .send({});
+  //   expect(deleteResponse.status).toBe(204);
+  // });
 
   it("should not be able to delete a category that doesn't exist", async () => {
     const response = await request

@@ -16,7 +16,6 @@ exports.getById = (req, res) => {
   prisma.post
     .findUnique({
       where: { id: parseInt(req.params.id) },
-      include: { activities: true },
     })
     .then((post) => {
       res.status(200).send(post);
