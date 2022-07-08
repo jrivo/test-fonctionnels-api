@@ -20,14 +20,18 @@ const mock = {
 };
 
 const mockResponse = () => {
-  const res = {};
-  res.status = jest.fn().mockReturnThis();
-  res.send = jest.fn();
+  const res = {
+    status: jest.fn().mockReturnValue({ send: jest.fn() }),
+  };
+  // res.status = jest.fn().mockReturnValue(res);
+  // res.send = jest.fn();
   return res;
 };
 
 describe("Unit tests", () => {
-  const res = mockResponse();
+  const res = {
+    status: jest.fn().mockReturnValue({ send: jest.fn() }),
+  };
   // console.log(res)
   beforeAll(() => {
     jest.resetModules();
@@ -44,7 +48,7 @@ describe("Unit tests", () => {
     category.getAll({}, res).then(() => {
       expect(mock.findMany).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.status.send).toHaveBeenCalledWith(records);
+      expect(res.send).toHaveBeenCalledWith(records);
     });
   });
 
@@ -121,7 +125,7 @@ describe("Unit tests", () => {
   });
 
   it("create should return an error", () => {
-    mock.create.mockRejectedValue("error");
+    mock.category.create.mockRejectedValue("error");
     category.create({ body: { name: "test" } }, res).then(() => {
       expect(mock.create).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);
@@ -142,7 +146,7 @@ describe("Unit tests", () => {
   });
 
   it("update should return an error", () => {
-    mock.update.mockRejectedValue("error");
+    mock.category.update.mockRejectedValue("error");
     category
       .update({ body: { name: "test" }, params: { id: 1 } }, res)
       .then(() => {
@@ -160,16 +164,16 @@ describe("Unit tests", () => {
       expect(res.status).toHaveBeenCalledWith(204);
       expect(res.send).toHaveBeenCalledWith(null);
     });
-  })
+  });
 
   it("delete should return an error", () => {
-    mock.delete.mockRejectedValue("error");
+    mock.category.delete.mockRejectedValue("error");
     category.delete({ params: { id: 1 } }, res).then(() => {
       expect(mock.delete).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.send).toHaveBeenCalledWith("error");
     });
-  })
+  });
 });
 
 describe("Functional tests", () => {});
