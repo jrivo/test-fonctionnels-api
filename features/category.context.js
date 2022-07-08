@@ -22,12 +22,10 @@ function generateString(length) {
   return result;
 }
 
-const username = generateString(12);
-const password = generateString(12);
-let token = "";
-
 Before(function () {
   this.client = request(require("../server.js"));
+  this.username = generateString(12);
+  this.password = generateString(12);
 });
 
 After(async () => {
@@ -41,15 +39,15 @@ AfterAll(function () {
 
 Given("I am connected as {string}", async function (role) {
   const response = await this.client["post"]("/register").send({
-    username: username,
-    password: password,
-    email: username + "@email.com",
+    username: this.username,
+    password: this.password,
+    email: this.username + "@email.com",
     role: role?.toUpperCase(),
   });
 
   const loginResponse = await this.client["post"]("/login").send({
-    username: username,
-    password: password,
+    username: this.username,
+    password: this.password,
   });
   this.token = loginResponse.body.accessToken;
 });

@@ -109,11 +109,6 @@ describe("Product routes", () => {
     expect(response.status).toBe(200);
   });
 
-  it("should return categories", async () => {
-    const response = await request.get("/categories").send();
-    expect(response.status).toBe(200);
-  });
-
   it("should return an empty array", async () => {
     const response = await request.get("/categories").send();
     expect(response.status).toBe(200);
@@ -143,6 +138,8 @@ describe("Product routes", () => {
       .send({
         name: categoryName,
       });
+
+    console.log("moderator token", moderatorToken);
     expect(response.status).toBe(403);
   });
 
