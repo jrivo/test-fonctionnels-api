@@ -1,14 +1,22 @@
 {
+  "scripts": {
+    "test": "jest",
+    "cucumber": "cucumber-js"
+  },
   "dependencies": {
+    "@cucumber/cucumber": "^8.4.0",
     "@prisma/client": "^3.11.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
+    "cucumber": "^6.0.7",
     "express": "^4.17.3",
+    "jest": "^28.1.2",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
-    "pg-hstore": "^2.3.4"
+    "pg-hstore": "^2.3.4",
+    "supertest": "^6.2.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",

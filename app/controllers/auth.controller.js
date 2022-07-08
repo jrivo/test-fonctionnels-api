@@ -1,7 +1,6 @@
 const config = require("../config/auth.config");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const authJwt = require("../middleware/authJwt");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -26,7 +25,9 @@ exports.login = (req, res) => {
     .findFirst({ where: { username: req.body.username } })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res
+          .status(401)
+          .send({ message: "Incorrect username or password" });
       }
       var passwordIsValid = bcrypt.compareSync(
         req.body.password,
@@ -35,7 +36,7 @@ exports.login = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!",
+          message: "Incorrect username or password",
         });
       }
       var token = jwt.sign({ id: user.id }, config.secret, {
@@ -55,15 +56,15 @@ exports.login = (req, res) => {
 };
 
 exports.me = (req, res) => {
-    prisma.user
-      .findUnique({
-        where: { id: req.userId },
-      })
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
+  prisma.user
+    .findUnique({
+      where: { id: req.userId },
+    })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
   return res.status(500);
 };
